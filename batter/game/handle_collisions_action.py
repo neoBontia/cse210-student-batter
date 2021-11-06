@@ -22,6 +22,7 @@ class HandleCollisionsAction(Action):
         paddle = cast["paddle"][0]
         bricks = cast["brick"]
 
+        # PADDLE
         for offset in range(len(paddle.get_text())):
             point = Point(paddle.get_position().get_x() + offset, paddle.get_position().get_y())
             if ball.get_position().equals(point):
@@ -29,6 +30,7 @@ class HandleCollisionsAction(Action):
                 new_direction = Point(random.choice([-1, 1]), reverse.get_y())
                 ball.set_velocity(new_direction)
         
+        # BRICKS
         for brick in bricks:
             if ball.get_position().equals(brick.get_position()):
                 bricks.remove(brick)
@@ -37,6 +39,7 @@ class HandleCollisionsAction(Action):
                 new_direction = Point(random.choice([-1, 1]), reverse.get_y())
                 ball.set_velocity(new_direction)
 
+        # WALLS
         if ball.get_position().equals(Point(ball.get_position().get_x(), 0)):
             reverse = ball.get_velocity().reverse()
             new_direction = Point(random.choice([1, -1]), reverse.get_y())
