@@ -1,4 +1,5 @@
 import random
+import sys
 from game import constants
 from game.action import Action
 from game.point import Point
@@ -25,14 +26,26 @@ class HandleCollisionsAction(Action):
             point = Point(paddle.get_position().get_x() + offset, paddle.get_position().get_y())
             if ball.get_position().equals(point):
                 reverse = ball.get_velocity().reverse()
-                new_direction = Point(random.choice([1,-1]), reverse.get_y())
+                new_direction = Point(random.choice([-1, 1]), reverse.get_y())
                 ball.set_velocity(new_direction)
         
         for brick in bricks:
             if ball.get_position().equals(brick.get_position()):
                 bricks.remove(brick)
-                
+
                 reverse = ball.get_velocity().reverse()
-                new_direction = Point(random.choice([1, -1]), reverse.get_y())
+                new_direction = Point(random.choice([-1, 1]), reverse.get_y())
                 ball.set_velocity(new_direction)
+
+        if ball.get_position().equals(Point(ball.get_position().get_x(), 0)):
+            reverse = ball.get_velocity().reverse()
+            new_direction = Point(random.choice([1, -1]), reverse.get_y())
+            ball.set_velocity(new_direction)
         
+        if ball.get_position().equals(Point(0, ball.get_position().get_y())) or ball.get_position().equals(Point(constants.MAX_X, ball.get_position().get_y())):
+            reverse = ball.get_velocity().reverse()
+            new_direction = Point(reverse.get_x(), random.choice([1, -1]))
+            ball.set_velocity(new_direction)
+
+        if ball.get_position().equals(Point(ball.get_position().get_x(), constants.MAX_Y)):
+            sys.exit()
