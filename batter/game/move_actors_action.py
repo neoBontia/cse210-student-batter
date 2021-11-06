@@ -39,7 +39,9 @@ class MoveActorsAction(Action):
         y1 = position.get_y()
         x2 = velocity.get_x()
         y2 = velocity.get_y()
-        x = 1 + (x1 + x2 - 1)# % (constants.MAX_X - 1)
+        x = 1 + (x1 + x2 - 1)
+        if x <= 0 or x + len(actor.get_text()) >= constants.MAX_X:
+            x = x1
         y = 1 + (y1 + y2 - 1)
         position = Point(x, y)
         actor.set_position(position)
